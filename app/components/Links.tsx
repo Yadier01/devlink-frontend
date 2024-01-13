@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
-
-import React, { useState } from "react";
+import cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 
 const plataformOption = ["Github", "Youtube", "Linkedin", "Twitter", "Gitlab"];
 
@@ -9,6 +9,63 @@ export const Links = () => {
   const [links, setLinks] = useState([
     { url: "", platform: plataformOption[0] },
   ]);
+
+  const token = cookies.get("token");
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = cookies.get("token");
+      try {
+        const response = await axios.get("http://localhost:3000/", {
+          params: {
+            token,
+          },
+        });
+        const newLinks = response.data.reduce(
+          (acc: any, usr: any) => [...acc, ...usr.links],
+          []
+        );
+        console.log(newLinks);
+        setLinks(newLinks);
+      } catch (error: any) {
+        console.log(error.response.data.error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  const sendLinks = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/", {
+        links,
+        token,
+      });
+      console.log(response.data);
+    } catch (error: any) {
+      console.log(error.response.data.error);
+    }
+  };
+
+  const editUserInfo = async () => {
+    try {
+      const response = await axios.patch("http://localhost:3000/", {
+        links,
+        token,
+      });
+      console.log(response.data);
+    } catch (error: any) {
+      console.log(error.response.data.error);
+    }
+  };
+
+  const buttonHandler = () => {
+    if (links.length === 0) {
+      sendLinks();
+    } else {
+      editUserInfo();
+    }
+  };
+
   const newLinkComponentHandler = () => {
     if (links.length >= 4) return;
     setLinks((prev) => [...prev, { url: "", platform: plataformOption[0] }]);
@@ -54,7 +111,7 @@ export const Links = () => {
               <span className="flex flex-col gap-1">
                 <span className="flex flex-col">
                   <label htmlFor="plataform" className="text-xs">
-                    Plataform
+                    Platform
                   </label>
                   <select
                     name="plataform"
@@ -87,7 +144,7 @@ export const Links = () => {
       )}
 
       <button
-        onClick={() => console.log(links)}
+        onClick={buttonHandler}
         className="bg-[#633bfe] w-full text-white p-2 rounded-lg font-bold "
       >
         save
