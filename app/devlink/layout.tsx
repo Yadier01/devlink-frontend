@@ -15,8 +15,8 @@ export default function RootLayout({
   return (
     <>
       {isToken && (
-        <header className=" m-4 p-4 ">
-          <nav className="w-full flex justify-between items-center">
+        <header className=" m-4 p-5 rounded-lg bg-white ">
+          <nav className="w-full  flex justify-between items-center">
             img
             <span className="flex gap-10">
               <Link href={"/devlink/links"}>Links</Link>
