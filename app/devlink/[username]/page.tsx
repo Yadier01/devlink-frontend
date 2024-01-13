@@ -14,6 +14,7 @@ export default function page({ params }: { params: { username: string } }) {
         },
       });
       setData(response.data);
+      console.log(response.data);
     } catch (error: any) {
       console.log(error.response.data.error);
     }
@@ -42,16 +43,16 @@ export default function page({ params }: { params: { username: string } }) {
                 <a href={link.url} target="_blank" className="w-full my-1.5">
                   <p
                     className={`capitalize ${
-                      link.plataform === "youtube"
+                      link.platform === "Youtube"
                         ? "bg-[#ee3638] text-white w-full p-2  flex items-center justify-center gap-2 rounded-md text-sm "
-                        : link.plataform === "github"
+                        : link.platform === "Github"
                         ? "bg-[#191919] text-white w-full p-2  flex items-center justify-center gap-2 rounded-md text-sm "
-                        : link.plataform === "Linkedin"
+                        : link.platform === "Linkedin"
                         ? "bg-[#2d69ff] text-white w-full p-2  flex items-center justify-center gap-2 rounded-md text-sm "
                         : ""
                     }`}
                   >
-                    {link.plataform}
+                    {link.platform}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 25 25"
