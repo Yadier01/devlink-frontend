@@ -14,7 +14,6 @@ export const Login = ({}) => {
   const isToken = localStorage.getItem("token");
   const deleteLocalStorage = () => {
     Cookies.remove("token");
-
     router.refresh();
     router.push("/login");
   };
