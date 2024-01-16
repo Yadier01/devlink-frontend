@@ -2,41 +2,18 @@
 import axios from "axios";
 import cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import fetchUserInfo from "../hooks/fetchUserInfo";
 
+const URL = "https://devlink-backend-production.up.railway.app/";
 const plataformOption = ["Github", "Youtube", "Linkedin", "Twitter", "Gitlab"];
 
 export const Links = () => {
-  const [links, setLinks] = useState([
-    { url: "", platform: plataformOption[0] },
-  ]);
-
+  const { links, setLinks } = fetchUserInfo(plataformOption);
   const token = cookies.get("token");
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const token = cookies.get("token");
-      try {
-        const response = await axios.get("http://localhost:3000/", {
-          params: {
-            token,
-          },
-        });
-        const newLinks = response.data.reduce(
-          (acc: any, usr: any) => [...acc, ...usr.links],
-          []
-        );
-        console.log(newLinks);
-        setLinks(newLinks);
-      } catch (error: any) {
-        console.log(error.response.data.error);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
 
   const sendLinks = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/", {
+      const response = await axios.post(URL, {
         links,
         token,
       });
@@ -48,7 +25,7 @@ export const Links = () => {
 
   const editUserInfo = async () => {
     try {
-      const response = await axios.patch("http://localhost:3000/", {
+      const response = await axios.patch(URL, {
         links,
         token,
       });
@@ -59,11 +36,8 @@ export const Links = () => {
   };
 
   const buttonHandler = () => {
-    if (links.length === 0) {
-      sendLinks();
-    } else {
-      editUserInfo();
-    }
+    sendLinks();
+    console.log(links);
   };
 
   const newLinkComponentHandler = () => {

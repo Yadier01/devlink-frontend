@@ -1,12 +1,18 @@
+import { Phone } from "@/app/components/Phone";
 import { ProfileForm } from "@/app/components/profileForm";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function page() {
+  if (!cookies().get("token")) redirect("/login");
+
   return (
     <div className="min-h-screen flex bg-[#f8f8f8] text-gray-700">
-      <section className="bg-white rounded-lg h- grow-[2] m-3 hidden 2xl:flex">
-        s
+      <section className=" bg-white items-center justify-center rounded-lg h- grow-[2] m-3 hidden 2xl:flex">
+        <Phone />
       </section>
+
       <section className="bg-white m-4 p-4 grow-[1] ">
         <h1 className="font-bold text-black text-2xl">Profile Details</h1>
         <p>Add your details to create a personal touch to your profile. </p>

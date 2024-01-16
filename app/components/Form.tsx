@@ -1,15 +1,19 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-
+import { useState } from "react";
 export const Form = ({ onSubmitFetch, isLogin, error }: any) => {
-  const [name, setName] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
     onSubmitFetch(name, password);
   };
+
+  const onpasd = (e:any )=>  { 
+
+  }
   return (
     <form
       className="flex bg-white p-8 gap-4 flex-col max-w-md h-[400px] justify-between  w-full rounded-lg  shadow-sm "

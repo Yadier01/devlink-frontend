@@ -3,12 +3,14 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+
+const URL = "https://devlink-backend-production.up.railway.app/";
 export default function page({ params }: { params: { username: string } }) {
   const [data, setData] = useState<any>([]);
   const name = params.username;
   const sendLoginRequest = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/", {
+      const response = await axios.get(URL, {
         params: {
           name,
         },

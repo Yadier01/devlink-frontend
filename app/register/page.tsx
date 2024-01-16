@@ -3,13 +3,12 @@ import React from "react";
 import { Form } from "../components/Form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
 export default function page() {
   const router = useRouter();
   const constRegiser = async (name: string, password: string) => {
     if (!name || !password) return;
     try {
-      const response = await axios.post("http://localhost:3000/auth/register", {
+      const response = await axios.post("https://devlink-backend-production.up.railway.app/auth/register", {
         name,
         password,
       });

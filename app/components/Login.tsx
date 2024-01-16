@@ -17,7 +17,6 @@ export const Login = ({}) => {
     router.refresh();
     router.push("/login");
   };
-  useEffect(() => {}, [data]);
 
   const onSubmitHanlderLogin = (e: any) => {
     e.preventDefault();
@@ -26,10 +25,13 @@ export const Login = ({}) => {
   const sendLoginRequest = async (name: string, password: string) => {
     if (!name || !password) return;
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", {
-        name,
-        password,
-      });
+      const response = await axios.post(
+        "https://devlink-backend-production.up.railway.app/auth/login",
+        {
+          name,
+          password,
+        }
+      );
       setData(response.data);
       Cookies.set("token", response.data.token);
     } catch (error: any) {
@@ -40,9 +42,7 @@ export const Login = ({}) => {
   const loginHandler = () => {};
   useEffect(() => {
     if (Cookies.get("token")) {
-      setTimeout(() => {
-        router.push("/devlink/links");
-      }, 4000);
+      router.push("/devlink/links");
     }
   }, [data]);
   return (
@@ -90,6 +90,9 @@ export const Login = ({}) => {
               onChange={(e: any) => setPassword(e.target.value)}
             />
           </span>
+          <p className="text-center text-gray-500">
+            use user user if you don't want to register
+          </p>
           <button
             type="submit"
             onClick={loginHandler}

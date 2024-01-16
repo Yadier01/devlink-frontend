@@ -1,6 +1,9 @@
 import { Links } from "@/app/components/Links";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export default function page() {
+  if (!cookies().get("token")) redirect("/login");
   return (
     <div className="flex  min-h-screen w-screen">
       <div className="bg-white rounded-lg grow-[2] m-3 hidden 2xl:flex">s</div>

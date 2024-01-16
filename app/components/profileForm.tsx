@@ -2,16 +2,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import cookies from "js-cookie";
-export const ProfileForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const sendUserInfo = async () => {
-    if (!firstName || !lastName) return;
-    const token = cookies.get("token");
+import useUserInfo from "../hooks/fetchUserInfo";
 
+const URL = "https://devlink-backend-production.up.railway.app/";
+export const ProfileForm = () => {
+  const { firstName, lastName, email, setFirstName, setEmail, setLastName } =
+    useUserInfo();
+  const sendUserInfo = async () => {
+    const token = cookies.get("token");
+    console.log(token);
     try {
-      const response = await axios.post("http://localhost:3000/", {
+      const response = await axios.post(URL, {
         firstName,
         email,
         lastName,
@@ -22,40 +23,14 @@ export const ProfileForm = () => {
       console.log(error.response.data.error);
     }
   };
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const token = cookies.get("token");
-      try {
-        const response = await axios.get("http://localhost:3000/", {
-          params: {
-            token,
-          },
-        });
-        response.data.map((usr: any) => {
-          setFirstName(usr.firstName);
-          setLastName(usr.lastName);
-          setEmail(usr.email);
-        });
-      } catch (error: any) {
-        console.log(error.response.data.error);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
-
   const buttonHandler = () => {
-    if (!firstName || !lastName || !email) {
-      sendUserInfo();
-    } else {
-      editUserInfo();
-    }
+    sendUserInfo();
   };
   const editUserInfo = async () => {
     const token = cookies.get("token");
 
     try {
-      const response = await axios.patch("http://localhost:3000/", {
+      const response = await axios.patch(URL, {
         firstName,
         email,
         lastName,
