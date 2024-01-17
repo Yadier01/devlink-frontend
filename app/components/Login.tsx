@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,7 @@ export const Login = ({}) => {
   const [data, setData] = React.useState<any>(null);
   const [error, setError] = React.useState<any>(null);
   const router = useRouter();
-  const isToken = localStorage.getItem("token");
+const isToken = Cookies.get("token");
   const deleteLocalStorage = () => {
     Cookies.remove("token");
     router.refresh();
