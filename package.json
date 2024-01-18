@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@vercel/speed-insights": "^1.0.5",
     "axios": "^1.6.5",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
