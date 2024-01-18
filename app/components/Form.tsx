@@ -3,7 +3,6 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -56,6 +55,7 @@ export const Form = ({ onSubmitFetch, isLogin, error }: any) => {
           <label htmlFor="name" className="text-sm text-gray-700">
             Name
           </label>
+
           <input
             type="text"
             {...register("name", { required: true, minLength: 3 })}
@@ -81,7 +81,7 @@ export const Form = ({ onSubmitFetch, isLogin, error }: any) => {
 
         {isLogin ? (
           <p className="text-gray-500 text-center ">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href={"/register"} className="text-[#643cff] ml-2">
               Create account
             </Link>

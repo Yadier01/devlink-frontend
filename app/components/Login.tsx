@@ -83,7 +83,7 @@ export const Login = ({}) => {
           />
         </span>
         <p className="text-center text-gray-500">
-          use user user if you don't want to register
+          use user user if you don&apos;t want to register
         </p>
         <button
           type="submit"
@@ -93,7 +93,7 @@ export const Login = ({}) => {
           Login
         </button>
         <p className="text-gray-500 text-center ">
-          Don't have an account?
+          Don&apos;t have an account?
           <Link href={"/register"} className="text-[#643cff] ml-2">
             Create account
           </Link>
