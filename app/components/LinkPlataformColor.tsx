@@ -1,8 +1,8 @@
 const platformStyles: any = {
   Youtube: "bg-[#ee3638] text-white",
-  Github: "bg-[#191919] text-white w-full",
-  Linkedin: "bg-[#2d69ff] text-white w-full",
-  Twitter: "bg-[#1da1f2] text-white w-full",
+  Github: "bg-[#191919] text-white ",
+  Linkedin: "bg-[#2d69ff] text-white ",
+  Twitter: "bg-[#1da1f2] text-white ",
 };
 interface Props {
   link: Links;
