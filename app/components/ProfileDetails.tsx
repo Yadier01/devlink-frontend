@@ -1,5 +1,4 @@
 import React from "react";
-import { Links } from "./Links";
 import { ProfileForm } from "./profileForm";
 
 export default function ProfileDetails() {

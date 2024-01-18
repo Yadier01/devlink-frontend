@@ -1,17 +1,16 @@
 import cookies from "js-cookie";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useStore } from "../store";
 
-export default function useUserInfo(plataformOption: string[] = []) {
+export default function useUserInfo() {
   const URL = "https://devlink-backend-production.up.railway.app/";
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [links, setLinks] = useState([
-    { url: "", platform: plataformOption[0] },
-  ]);
+  const { setUserLinks, firstName, lastName, email, links, setUserInfo } =
+    useStore();
 
-  const fetchUserInfo = async () => {
+  const fetchUserData = async () => {
+    if (firstName && lastName && email && links.length > 1) return;
+
     const token = cookies.get("token");
     try {
       const response = await axios.get(URL, {
@@ -19,35 +18,22 @@ export default function useUserInfo(plataformOption: string[] = []) {
           token,
         },
       });
-      setFirstName(response.data[0].firstName);
-      setLastName(response.data[0].lastName);
-      setEmail(response.data[0].email);
-    } catch (error: any) {}
-    console.log("error"); //fix later
-  };
-
-  const fetchUserLinks = async () => {
-    const token = cookies.get("token");
-    try {
-      const response = await axios.get(URL, {
-        params: {
-          token,
-        },
+      console.log(response.data, response.data[0]);
+      const newLinks = response.data[0].links;
+      setUserInfo({
+        firstName: response.data[0].firstName,
+        lastName: response.data[0].lastName,
+        email: response.data[0].email,
       });
-      const newLinks = response.data.reduce(
-        (acc: any, usr: any) => [...acc, ...usr.links],
-        []
-      );
-      console.log(newLinks);
-      setLinks(newLinks);
+      setUserLinks(newLinks);
+      console.log("fetched", newLinks);
     } catch (error: any) {
-      console.log(error.response.data.error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchUserInfo();
-    fetchUserLinks();
+    fetchUserData();
   }, []);
 
   return {
@@ -55,9 +41,6 @@ export default function useUserInfo(plataformOption: string[] = []) {
     lastName,
     email,
     links,
-    setFirstName,
-    setLastName,
-    setEmail,
-    setLinks,
+    fetchUserData,
   };
 }

@@ -1,13 +1,16 @@
 "use client";
 import axios from "axios";
 import cookies from "js-cookie";
-import useUserInfo from "../hooks/fetchUserInfo";
 import Button from "./Button";
+import { useStore } from "../store";
+import fetchUserInfo from "../hooks/fetchUserInfo";
 
 const URL = "https://devlink-backend-production.up.railway.app/";
 export const ProfileForm = () => {
-  const { firstName, lastName, email, setFirstName, setEmail, setLastName } =
-    useUserInfo();
+  const { firstName, lastName, email, setUserInfo } = useStore();
+
+  fetchUserInfo();
+
   const sendUserInfo = async () => {
     const token = cookies.get("token");
     console.log(token);
@@ -23,6 +26,7 @@ export const ProfileForm = () => {
       console.log(error.response.data.error);
     }
   };
+
   const buttonHandler = () => {
     sendUserInfo();
   };
@@ -40,7 +44,7 @@ export const ProfileForm = () => {
             value={firstName}
             required
             className="p-1 rounded-lg border-1 w border-[#623afd] w-full focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => setUserInfo({ firstName: e.target.value })}
           />
         </span>
 
@@ -53,7 +57,7 @@ export const ProfileForm = () => {
             required
             type="text"
             className="p-1 rounded-md border-1 w-full border-[#623afd] focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => setUserInfo({ lastName: e.target.value })}
           />
         </span>
 
@@ -65,7 +69,7 @@ export const ProfileForm = () => {
             value={email}
             type="text"
             className="p-1 rounded-lg border-1 w-full border-[#623afd] focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUserInfo({ email: e.target.value })}
           />
         </span>
       </form>

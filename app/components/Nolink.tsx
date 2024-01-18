@@ -1,5 +1,5 @@
 import React from "react";
-import NoLinkSvg from "./AllSVG";
+import { NoLinkSvg } from "./AllSVG";
 
 export default function Nolink() {
   return (

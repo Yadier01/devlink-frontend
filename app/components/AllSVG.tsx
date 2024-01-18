@@ -1,4 +1,4 @@
-export default function NoLinkSvg() {
+export function NoLinkSvg() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -85,3 +85,30 @@ export default function NoLinkSvg() {
     </svg>
   );
 }
+
+export function SVGArrrowRight() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill="#fff"
+        d="M2.667 7.333v1.334h8L7 12.333l.947.947L13.227 8l-5.28-5.28L7 3.667l3.667 3.666h-8Z"
+      />
+    </svg>
+  );
+}
+
+import React from "react";
+
+export const SVGDropdownOpen = () => {
+  return (
+    <svg width="14" height="9" fill="none" viewBox="0 0 14 9">
+      <path stroke="#633CFF" stroke-width="2" d="m1 1 6 6 6-6"></path>
+    </svg>
+  );
+};

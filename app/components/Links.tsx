@@ -1,17 +1,27 @@
 "use client";
 import axios from "axios";
 import cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import fetchUserInfo from "../hooks/fetchUserInfo";
 import Button from "./Button";
 import Nolink from "./Nolink";
+import { Dropdown } from "./DropDown";
+import { useStore } from "../store";
 
 const URL = "https://devlink-backend-production.up.railway.app/";
-const plataformOption = ["Github", "Youtube", "Linkedin", "Twitter", "Gitlab"];
+const plataformOption = [
+  { id: 1, name: "Github" },
+  { id: 2, name: "Youtube" },
+  { id: 3, name: "Linkedin" },
+  { id: 4, name: "Twitter" },
+];
 
 export const Links = () => {
-  const { links, setLinks } = fetchUserInfo(plataformOption);
   const token = cookies.get("token");
+  const { links, setUserLinks } = useStore();
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+
+  const { fetchUserData } = fetchUserInfo();
 
   const sendLinks = async () => {
     try {
@@ -31,25 +41,20 @@ export const Links = () => {
   };
 
   const newLinkComponentHandler = () => {
-    setLinks((prev) => [...prev, { url: "", platform: plataformOption[0] }]);
+    setUserLinks([...links, { platform: "", url: "" }]);
   };
 
   const handleUrlChange = (idx: number, url: string) => {
     const newLinks = [...links];
     newLinks[idx].url = url;
-    setLinks(newLinks);
+    setUserLinks(newLinks);
   };
 
-  const handlePlatformChange = (idx: number, platform: string) => {
-    const newLinks = [...links];
-    newLinks[idx].platform = platform;
-    setLinks(newLinks);
+  const removeLinkHandler = (id: number) => {
+    const newLinks = links.filter((_, index) => index !== id);
+    setUserLinks(newLinks);
   };
-  const removeLinkHandler = (idx: any) => {
-    const newLinks = [...links];
-    newLinks.splice(idx, 1);
-    setLinks(newLinks);
-  };
+
   return (
     <>
       <section className="relative px-8 pt-8 ">
@@ -88,18 +93,15 @@ export const Links = () => {
                       <label htmlFor="plataform" className="text-xs">
                         Platform
                       </label>
-                      <select
-                        name="plataform"
-                        value={link.platform}
-                        className="bg-white border-2 border-gray-200 p-2 rounded-lg "
-                        onChange={(e) =>
-                          handlePlatformChange(idx, e.target.value)
-                        }
-                      >
-                        {plataformOption.map((platform) => (
-                          <option key={platform}>{platform}</option>
-                        ))}
-                      </select>
+                      <Dropdown
+                        selected={link.platform}
+                        options={plataformOption}
+                        links={links}
+                        idx={idx}
+                        setLinks={setUserLinks}
+                        openDropdown={openDropdown}
+                        setOpenDropdown={setOpenDropdown}
+                      />
                     </span>
 
                     <span className="flex flex-col ">

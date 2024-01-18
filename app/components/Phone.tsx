@@ -1,19 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import fetchUserInfo from "../hooks/fetchUserInfo";
+import { useStore } from "../store";
+import { LinkPlataformColor } from "./LinkPlataformColor";
 
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const { links } = fetchUserInfo();
-  const plataformOption = [
-    "Github",
-    "Youtube",
-    "Linkedin",
-    "Twitter",
-    "Gitlab",
-  ];
+  const { email, links } = useStore();
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">
       <svg width="308" height="632" fill="none" viewBox="0 0 308 632">
@@ -56,19 +50,11 @@ export const Phone = () => {
         ></rect>
 
         <foreignObject x="0" y="208" width="100%" height={632 - 208}>
-          <div style={{ height: "97%", overflow: "auto" }}>
-            <p className="text-center text-xs">test1234@gmail.com</p>
+          <div className="flex flex-col items-center gap-3 h-full overflow-auto">
+            <p className="text-center text-xs">{email}</p>
 
             {links.map((link, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center justify-center"
-                style={{ height: "32px" }}
-              >
-                <a href={link.url}>
-                  <p className="text-center text-md">{link.platform}</p>
-                </a>
-              </div>
+              <LinkPlataformColor link={link} isPhone={true} />
             ))}
           </div>
         </foreignObject>
