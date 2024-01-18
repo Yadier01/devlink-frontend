@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import fetchUserInfo from "../hooks/fetchUserInfo";
-import UILeft from "./UILeft";
 
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
