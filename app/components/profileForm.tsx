@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import cookies from "js-cookie";
 import useUserInfo from "../hooks/fetchUserInfo";
+import Button from "./Button";
 
 const URL = "https://devlink-backend-production.up.railway.app/";
 export const ProfileForm = () => {
@@ -26,24 +27,10 @@ export const ProfileForm = () => {
   const buttonHandler = () => {
     sendUserInfo();
   };
-  const editUserInfo = async () => {
-    const token = cookies.get("token");
 
-    try {
-      const response = await axios.patch(URL, {
-        firstName,
-        email,
-        lastName,
-        token,
-      });
-      console.log(response.data);
-    } catch (error: any) {
-      console.log(error.response.data.error);
-    }
-  };
   return (
     <>
-      <form className="bg-[#faf8f8] p-4 flex flex-col gap-4 ">
+      <form className="bg-[#fafafa] p-4 flex flex-col gap-4 ">
         <span className="flex flex-col  xl:flex-row    ">
           <label htmlFor="firstName " className="text-sm my-2 w-1/3">
             First name*
@@ -83,12 +70,7 @@ export const ProfileForm = () => {
           />
         </span>
       </form>
-      <button
-        onClick={buttonHandler}
-        className="bg-[#633bfe] w-full text-white p-2 rounded-lg font-bold "
-      >
-        save
-      </button>
+      <Button onClick={buttonHandler} />
     </>
   );
 };
