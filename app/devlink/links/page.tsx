@@ -2,7 +2,6 @@ import { Links } from "@/app/components/Links";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { Phone } from "@/app/components/Phone";
-import ProfileDetails from "@/app/components/ProfileDetails";
 import { UIRight } from "@/app/components/UiRight";
 
 export default function page() {
