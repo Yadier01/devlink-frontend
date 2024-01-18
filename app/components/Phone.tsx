@@ -54,7 +54,7 @@ export const Phone = () => {
             <p className="text-center text-xs">{email}</p>
 
             {links.map((link, index) => (
-              <LinkPlataformColor link={link} isPhone={true} />
+              <LinkPlataformColor key={index} link={link} isPhone={true} />
             ))}
           </div>
         </foreignObject>
