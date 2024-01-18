@@ -1,6 +1,5 @@
 import { Phone } from "@/app/components/Phone";
 import ProfileDetails from "@/app/components/ProfileDetails";
-import UILeft from "@/app/components/UILeft";
 import { UIRight } from "@/app/components/UiRight";
 import { ProfileForm } from "@/app/components/profileForm";
 import { cookies } from "next/headers";

@@ -1,6 +1,5 @@
 "use client";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import cookies from "js-cookie";
 import useUserInfo from "../hooks/fetchUserInfo";
 import Button from "./Button";
