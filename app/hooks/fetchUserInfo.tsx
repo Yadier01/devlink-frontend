@@ -22,9 +22,8 @@ export default function useUserInfo(plataformOption: string[] = []) {
       setFirstName(response.data[0].firstName);
       setLastName(response.data[0].lastName);
       setEmail(response.data[0].email);
-    } catch (error: any) {
-      console.log(error.response.message);
-    }
+    } catch (error: any) {}
+    console.log("error"); //fix later
   };
 
   const fetchUserLinks = async () => {
