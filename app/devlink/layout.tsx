@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { Header } from "../components/Header";
 export const metadata: Metadata = {
   title: "Dev Links",
   description: "Best place to share your social media links",
@@ -14,19 +15,8 @@ export default function RootLayout({
   const isToken = cookies().get("token");
   return (
     <>
-      {isToken && (
-        <header className=" m-4 p-5 rounded-lg bg-white ">
-          <nav className="w-full  flex justify-between items-center">
-            img
-            <span className="flex gap-10">
-              <Link href={"/devlink/links"}>Links</Link>
-              <Link href={"/devlink/profile"}>Profile Details</Link>
-            </span>
-            <button>Preview</button>
-          </nav>
-        </header>
-      )}
-      <main>{children}</main>
+      <Header />
+      <main className="mt-4 px-4  pb-4 sm:mt-6 sm:px-6">{children}</main>
     </>
   );
 }

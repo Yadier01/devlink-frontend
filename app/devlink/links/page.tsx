@@ -1,20 +1,20 @@
 import { Links } from "@/app/components/Links";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { Phone } from "@/app/components/Phone";
+import ProfileDetails from "@/app/components/ProfileDetails";
+import UILeft from "@/app/components/UILeft";
+import { UIRight } from "@/app/components/UiRight";
 
 export default function page() {
   if (!cookies().get("token")) redirect("/login");
   return (
-    <div className="flex  min-h-screen w-screen">
-      <div className="bg-white rounded-lg grow-[2] m-3 hidden 2xl:flex">s</div>
-      <div className="bg-white p-4 shadow-md rounded-lg min-h-full grow-[1] m-3">
-        <h1 className="font-bold text-2xl ">Customize your links</h1>
-        <p className="text-gray-500 mt-2 mb-10">
-          Add/edit/remove links below and then share all your profilse with the
-          world!
-        </p>
+    <div className="lg:grid lg:grid-cols-2 lg:gap-x-6 xl:grid-cols-[1fr_1.5fr]">
+      <Phone />
+
+      <UIRight>
         <Links />
-      </div>
+      </UIRight>
     </div>
   );
 }
