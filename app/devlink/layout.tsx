@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
+
 import { Header } from "../components/Header";
 export const metadata: Metadata = {
   title: "Dev Links",
@@ -11,7 +11,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isToken = cookies().get("token");
   return (
     <>
       <Header />

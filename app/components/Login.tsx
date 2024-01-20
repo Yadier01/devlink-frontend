@@ -34,11 +34,8 @@ export const Login = ({}) => {
     }
   };
 
-  const loginHandler = () => {};
   useEffect(() => {
-    if (Cookies.get("token")) {
-      router.push("/devlink/links");
-    }
+    if (Cookies.get("token")) router.push("/devlink/links");
   }, [data]);
   return (
     <>
@@ -87,7 +84,6 @@ export const Login = ({}) => {
         </p>
         <button
           type="submit"
-          onClick={loginHandler}
           className="bg-[#643cff] text-white p-2 rounded-lg font-bold"
         >
           Login

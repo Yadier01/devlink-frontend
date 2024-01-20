@@ -9,7 +9,7 @@ export default function useUserInfo() {
     useStore();
 
   const fetchUserData = async () => {
-    if (firstName && lastName && email && links.length > 1) return;
+    if (firstName && lastName && email) return;
 
     const token = cookies.get("token");
     try {
@@ -18,7 +18,7 @@ export default function useUserInfo() {
           token,
         },
       });
-      console.log(response.data, response.data[0]);
+
       const newLinks = response.data[0].links;
       setUserInfo({
         firstName: response.data[0].firstName,
@@ -26,7 +26,6 @@ export default function useUserInfo() {
         email: response.data[0].email,
       });
       setUserLinks(newLinks);
-      console.log("fetched", newLinks);
     } catch (error: any) {
       console.log(error);
     }

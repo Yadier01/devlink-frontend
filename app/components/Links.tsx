@@ -21,7 +21,7 @@ export const Links = () => {
   const { links, setUserLinks } = useStore();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
-  const { fetchUserData } = fetchUserInfo();
+  fetchUserInfo();
 
   const sendLinks = async () => {
     try {
