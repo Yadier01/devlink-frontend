@@ -1,6 +1,6 @@
 import cookies from "js-cookie";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStore } from "../store";
 
 export default function useUserInfo() {
