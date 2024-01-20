@@ -5,12 +5,12 @@ export default function ShowUserInfo({ data }: any) {
     <div className="flex items-center justify-center min-h-screen bg-[#fafafa]">
       {data.map((link: any) => (
         <div
-          className="bg-white shadow-lg p-4 h-max w-60 flex flex-col gap-8 items-center justify-between"
+          className="bg-white shadow-lg p-4 h-max w-80 flex flex-col gap-8 items-center justify-between"
           key={link._id}
         >
-          <span className="items-center flex  flex-col justify-center">
+          <span className="items-center  flex  flex-col justify-center">
             <img src="/pfp.jpg" className="my-3 rounded-full h-14" alt="" />
-            <h1 className="font-bold text-lg capitalize">
+            <h1 className="font-bold  w-72 text-lg capitalize">
               {link.firstName} {link.lastName}
             </h1>
             <p className="text-sm">{link.email}</p>

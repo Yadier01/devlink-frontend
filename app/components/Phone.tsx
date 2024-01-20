@@ -7,7 +7,7 @@ import { LinkPlataformColor } from "./LinkPlataformColor";
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const { email, links } = useStore();
+  const { firstName, lastName, email, links } = useStore();
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">
       <svg width="308" height="632" fill="none" viewBox="0 0 308 632">
@@ -40,15 +40,6 @@ export const Phone = () => {
           onError={() => setImgLoaded(false)}
         />
 
-        <rect
-          width="160"
-          height="16"
-          x="73.5"
-          y="185"
-          fill="#EEE"
-          rx="8"
-        ></rect>
-
         <foreignObject x="0" y="208" width="100%" height={632 - 208}>
           <div className="flex flex-col items-center gap-3 h-full overflow-auto">
             <p className="text-center text-xs">{email}</p>
@@ -58,6 +49,25 @@ export const Phone = () => {
             ))}
           </div>
         </foreignObject>
+
+        {firstName && lastName ? (
+          <foreignObject x="46" y="170" width="200" height="30">
+            <div className="w-full h-full flex items-center justify-center  ">
+              <p className="text-center m-0 text-md">
+                {firstName} {lastName}
+              </p>
+            </div>
+          </foreignObject>
+        ) : (
+          <rect
+            width="160"
+            height="16"
+            x="73.5"
+            y="185"
+            fill="#EEE"
+            rx="8"
+          ></rect>
+        )}
       </svg>
     </div>
   );
