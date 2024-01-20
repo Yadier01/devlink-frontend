@@ -10,10 +10,14 @@ import { useStore } from "../store";
 
 const URL = "https://devlink-backend-production.up.railway.app/";
 const plataformOption = [
-  { id: 1, name: "Github" },
-  { id: 2, name: "Youtube" },
-  { id: 3, name: "Linkedin" },
-  { id: 4, name: "Twitter" },
+  {
+    id: 1,
+    name: "Github",
+    imgSrc: "/images/icon-github-gray.svg",
+  },
+  { id: 2, name: "Youtube", imgSrc: "/images/icon-youtube-gray.svg" },
+  { id: 3, name: "Linkedin", imgSrc: "/images/icon-linkedin-gray.svg" },
+  { id: 4, name: "Twitter", imgSrc: "/images/icon-twitter-gray.svg" },
 ];
 
 export const Links = () => {
