@@ -18,7 +18,8 @@ const plataformOption = [
 
 export const Links = () => {
   const token = cookies.get("token");
-  const { links, setUserLinks } = useStore();
+  const links = useStore((state) => state.links);
+  const setUserLinks = useStore((state) => state.setUserLinks);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
   fetchUserInfo();
@@ -87,7 +88,6 @@ export const Links = () => {
                       Remove
                     </button>
                   </span>
-
                   <div className="flex flex-col gap-1">
                     <span className="flex flex-col">
                       <label htmlFor="plataform" className="text-xs">
