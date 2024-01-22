@@ -24,6 +24,7 @@ export const Links = () => {
 
   fetchUserInfo();
 
+  // lazy git test
   const sendLinks = async () => {
     try {
       const response = await axios.post(URL, {
