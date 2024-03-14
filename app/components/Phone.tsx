@@ -1,13 +1,14 @@
 "use client";
-
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { useStore } from "../store";
 import { LinkPlataformColor } from "./LinkPlataformColor";
-
+import fetchUserInfo from "../hooks/fetchUserInfo";
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const { image, firstName, lastName, email, links } = useStore();
 
-  const { firstName, lastName, email, links } = useStore();
+  fetchUserInfo();
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">
       <svg width="308" height="632" fill="none" viewBox="0 0 308 632">
@@ -29,15 +30,16 @@ export const Phone = () => {
 
         {!imgLoaded && <circle cx="153.5" cy="112" r="48" fill="#EEE"></circle>}
 
+        {/* @ts-ignore */}
         <image
           x="105.5"
-          xlinkHref="/pfp.jpg"
+          xlinkHref={`http://localhost:3002${image}`}
           y="64"
           height="96px"
           width="96px"
           clipPath="url(#circleView)"
-          onLoad={() => setImgLoaded(false)}
-          onError={() => setImgLoaded(false)}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgLoaded(true)}
         />
 
         <foreignObject x="0" y="208" width="100%" height={632 - 208}>

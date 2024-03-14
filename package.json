@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@uploadthing/react": "^6.2.2",
     "@vercel/speed-insights": "^1.0.5",
     "axios": "^1.6.5",
     "js-cookie": "^3.0.5",
@@ -17,6 +18,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
+    "react-query": "^3.39.3",
+    "uploadthing": "^6.3.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

@@ -3,6 +3,12 @@ const platformStyles: any = {
   Github: "bg-[#191919] text-white ",
   Linkedin: "bg-[#2d69ff] text-white ",
   Twitter: "bg-[#1da1f2] text-white ",
+  freecodecamp: "bg-[#0a0a23] text-white ",
+  Facebook: "bg-[#1877f2] text-white ",
+  Codepen: "bg-[#000000] text-white ",
+  Devto: "bg-[#0a0a0a] text-white ",
+  Twitch: "bg-[#6441a5] text-white ",
+  Instagram: "bg-[#e1306c] text-white ",
 };
 interface Props {
   link: Links;

@@ -6,22 +6,29 @@ import { useStore } from "../store";
 import fetchUserInfo from "../hooks/fetchUserInfo";
 
 const URL = "https://devlink-backend-production.up.railway.app/";
+const selfhostedURL = "http://localhost:3002/";
 export const ProfileForm = () => {
   const { firstName, lastName, email, setUserInfo } = useStore();
 
   fetchUserInfo();
-
   const sendUserInfo = async () => {
     const token = cookies.get("token");
-    console.log(token);
+    console.log("hit");
     try {
-      const response = await axios.post(URL, {
-        firstName,
-        email,
-        lastName,
-        token,
-      });
-      console.log(response.data);
+      await axios.post(
+        selfhostedURL,
+        {
+          firstName,
+          email,
+          lastName,
+        },
+        {
+          headers: {
+            token,
+          },
+        },
+      );
+      console.log("second hit");
     } catch (error: any) {
       console.log(error.response.data.error);
     }

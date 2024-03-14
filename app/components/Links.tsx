@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fetchUserInfo from "../hooks/fetchUserInfo";
 import Button from "./Button";
 import Nolink from "./Nolink";
@@ -14,6 +14,15 @@ const plataformOption = [
   { id: 2, name: "Youtube", imgSrc: "/images/icon-youtube-gray.svg" },
   { id: 3, name: "Linkedin", imgSrc: "/images/icon-linkedin-gray.svg" },
   { id: 4, name: "Twitter", imgSrc: "/images/icon-twitter-gray.svg" },
+  { id: 5, name: "Facebook", imgSrc: "/images/icon-facebook-gray.svg" },
+  { id: 7, name: "Twitch", imgSrc: "/images/icon-twitch-gray.svg" },
+  { id: 8, name: "Codepen", imgSrc: "/images/icon-codepen-gray.svg" },
+  { id: 9, name: "Devto", imgSrc: "/images/icon-devto-gray.svg" },
+  {
+    id: 10,
+    name: "FreecodeCamp",
+    imgSrc: "/images/icon-freecodecamp-gray.svg",
+  },
 ];
 
 export const Links = () => {
@@ -21,16 +30,19 @@ export const Links = () => {
   const links = useStore((state) => state.links);
   const setUserLinks = useStore((state) => state.setUserLinks);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-
-  fetchUserInfo();
-
-  // lazy git test
   const sendLinks = async () => {
     try {
-      const response = await axios.post(URL, {
-        links,
-        token,
-      });
+      const response = await axios.post(
+        "http://localhost:3002/",
+        {
+          links,
+        },
+        {
+          headers: {
+            token,
+          },
+        },
+      );
       console.log(response.data);
     } catch (error: any) {
       console.log(error.response.data.error);

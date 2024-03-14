@@ -10,13 +10,12 @@ export default function Page({ params }: { params: { username: string } }) {
   const name = params.username;
   const fetchUserByName = async () => {
     try {
-      const response = await axios.get(URL, {
+      const response = await axios.get("http://localhost:3002/", {
         params: {
           name,
         },
       });
       setData(response.data);
-      console.log(response.data);
     } catch (error: any) {
       console.log(error.response.data.error);
     }

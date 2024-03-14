@@ -20,13 +20,10 @@ export const Login = ({}) => {
   const sendLoginRequest = async (name: string, password: string) => {
     if (!name || !password) return;
     try {
-      const response = await axios.post(
-        "https://devlink-backend-production.up.railway.app/auth/login",
-        {
-          name,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:3002/auth/login", {
+        name,
+        password,
+      });
       setData(response.data);
       Cookies.set("token", response.data.token);
     } catch (error: any) {

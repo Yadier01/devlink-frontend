@@ -17,7 +17,7 @@ export const Header = () => {
   ];
 
   const previewLink = {
-    href: "/devlink/appearance",
+    href: "/devlink/profile/preview",
     imgSrc: "/images/icon-preview-header.svg",
     text: "Preview",
   };
@@ -40,6 +40,7 @@ export const Header = () => {
                 alt=""
               />
               <div className="flex gap-10">
+                {" "}
                 {links.map((link) => (
                   <div key={link.href}>
                     <Link href={link.href}>
