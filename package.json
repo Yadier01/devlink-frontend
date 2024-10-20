@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
     "@uploadthing/react": "^6.2.2",
     "@vercel/speed-insights": "^1.0.5",
     "axios": "^1.6.5",
+    "bcryptjs": "^2.4.3",
+    "convex": "^1.16.6",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
     "react": "^18",

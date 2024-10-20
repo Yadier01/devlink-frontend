@@ -1,10 +1,12 @@
 "use client";
+import { api } from "@/convex/_generated/api";
 import axios from "axios";
 
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
+import { useAction, useMutation, useQuery } from "convex/react";
 
 export const Login = ({}) => {
   const [name, setName] = React.useState<string>("");
@@ -13,27 +15,23 @@ export const Login = ({}) => {
   const [error, setError] = React.useState<any>(null);
   const router = useRouter();
 
+  const userLogin = useAction(api.user.loginUser);
+  const sendLoginRequest = async (name: string, password: string) => {
+    if (!name || !password) return;
+    try {
+      const { status } = await userLogin({ name, password });
+
+      if (status === 200) router.push("/devlink/profile");
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
   const onSubmitHanlderLogin = (e: any) => {
     e.preventDefault();
     sendLoginRequest(name, password);
   };
-  const sendLoginRequest = async (name: string, password: string) => {
-    if (!name || !password) return;
-    try {
-      const response = await axios.post("http://localhost:3002/auth/login", {
-        name,
-        password,
-      });
-      setData(response.data);
-      Cookies.set("token", response.data.token);
-    } catch (error: any) {
-      setError(error.response.data.error);
-    }
-  };
 
-  useEffect(() => {
-    if (Cookies.get("token")) router.push("/devlink/links");
-  }, [data]);
   return (
     <>
       <form

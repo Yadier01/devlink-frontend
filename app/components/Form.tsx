@@ -1,9 +1,11 @@
 "use client";
+import { api } from "@/convex/_generated/api";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAction, useMutation } from "convex/react";
 
 type Inputs = {
   name: string;
@@ -13,26 +15,18 @@ export const Form = ({ onSubmitFetch, isLogin, error }: any) => {
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     regiser(data.name, data.password);
+    console.log("hit", data.name, data.password);
   };
 
   const router = useRouter();
 
+  const addUser = useAction(api.user.createUser);
+
   const regiser = async (name: string, password: string) => {
     try {
-      const response = await axios.post(
-        "https://devlink-backend-production.up.railway.app/auth/register",
-        {
-          name,
-          password,
-        }
-      );
-
-      if (response.status === 201) {
-        <p>succes</p>;
-        router.push("/login");
-      }
-    } catch (error: any) {
-      return error.response.data.error;
+      const user = await addUser({ name, password });
+    } catch (error) {
+      console.log(error);
     }
   };
 

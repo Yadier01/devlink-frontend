@@ -1,43 +1,28 @@
 "use client";
-import axios from "axios";
 import cookies from "js-cookie";
 import Button from "./Button";
 import { useStore } from "../store";
-import fetchUserInfo from "../hooks/fetchUserInfo";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-const URL = "https://devlink-backend-production.up.railway.app/";
-const selfhostedURL = "http://localhost:3002/";
 export const ProfileForm = () => {
-  const { firstName, lastName, email, setUserInfo } = useStore();
-
-  fetchUserInfo();
-  const sendUserInfo = async () => {
-    const token = cookies.get("token");
-    console.log("hit");
+  // const { firstName, lastName, email, setUserInfo } = useStore();
+  const [userInfo, setUserInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const submitProfile = useMutation(api.profile.createProfile);
+  const buttonHandler = async () => {
     try {
-      await axios.post(
-        selfhostedURL,
-        {
-          firstName,
-          email,
-          lastName,
-        },
-        {
-          headers: {
-            token,
-          },
-        },
-      );
-      console.log("second hit");
+      const res = await submitProfile(userInfo);
     } catch (error: any) {
-      console.log(error.response.data.error);
+      console.log(error);
     }
   };
 
-  const buttonHandler = () => {
-    sendUserInfo();
-  };
-
+  // useEffect(async () => await useQuery(api.profile.getProfile), []);
   return (
     <>
       <form className="bg-[#fafafa] p-4 flex flex-col gap-4 ">
@@ -48,10 +33,12 @@ export const ProfileForm = () => {
           <input
             type="text"
             name="firstName"
-            value={firstName}
+            value={userInfo.firstName}
             required
             className="p-1 rounded-lg border-1 w border-[#623afd] w-full focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setUserInfo({ firstName: e.target.value })}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, firstName: e.target.value })
+            }
           />
         </span>
 
@@ -60,11 +47,13 @@ export const ProfileForm = () => {
             Last name*
           </label>
           <input
-            value={lastName}
+            value={userInfo.lastName}
             required
             type="text"
             className="p-1 rounded-md border-1 w-full border-[#623afd] focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setUserInfo({ lastName: e.target.value })}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, lastName: e.target.value })
+            }
           />
         </span>
 
@@ -73,10 +62,12 @@ export const ProfileForm = () => {
             Email
           </label>
           <input
-            value={email}
+            value={userInfo.email}
             type="text"
             className="p-1 rounded-lg border-1 w-full border-[#623afd] focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
-            onChange={(e) => setUserInfo({ email: e.target.value })}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, email: e.target.value })
+            }
           />
         </span>
       </form>
