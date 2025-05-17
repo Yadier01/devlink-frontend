@@ -79,38 +79,43 @@ export const createLink = mutation({
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
     if (!user) throw new Error("Not authenticated");
+
     const profile = await ctx.db
       .query("profile")
       .withIndex("by_name", (q) => q.eq("name", user.nickname!))
       .unique();
-
     if (!profile) throw new Error("Profile not found");
 
-    const links = await ctx.runQuery(internal.profile.getLinks, {
+    const existingLinks = await ctx.runQuery(internal.profile.getLinks, {
       profileId: profile._id,
     });
 
-    args.links.forEach(async (link) => {
-      const linkExists = links.find((l) => link._id === l._id);
+    //if link is already in the database, update it
+    //if link is not in the database, insert it
+    const tasks = args.links.map(async (link) => {
+      const existing = existingLinks.find((l) => link._id === l._id);
 
-      if (linkExists) {
-        if (
-          linkExists.platform !== link.platform ||
-          linkExists.url !== link.url
-        ) {
-        }
-        await ctx.db.patch(linkExists._id, {
-          platform: link.platform,
-          url: link.url,
-        });
-      } else if (!linkExists) {
-        await ctx.db.insert("links", {
+      if (!existing) {
+        return ctx.db.insert("links", {
           platform: link.platform,
           url: link.url,
           profileId: profile._id,
         });
       }
+
+      const isModified =
+        existing.platform !== link.platform || existing.url !== link.url;
+
+      if (isModified) {
+        return ctx.db.patch(existing._id, {
+          platform: link.platform,
+          url: link.url,
+        });
+      }
+      return;
     });
+
+    await Promise.all(tasks);
   },
 });
 export const getLinks = internalQuery({
@@ -118,11 +123,6 @@ export const getLinks = internalQuery({
     profileId: v.id("profile"),
   },
   handler: async (ctx, args) => {
-    //  const  profile= await ctx.db
-    //     .query("profile")
-    //     .withIndex("by_name", (q) => q.eq("name", args.name))
-    //     .unique();
-    //   const links = await getManyFrom(ctx.db, "links", "profileId", profile._id);
     return await ctx.db
       .query("links")
       .withIndex("by_profile_id", (q) => q.eq("profileId", args.profileId))
