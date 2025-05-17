@@ -4,20 +4,20 @@ import { useStore } from "../store";
 import { LinkPlataformColor } from "./LinkPlataformColor";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
+import { useAuth } from "@clerk/nextjs";
 export const Phone = () => {
-  const [imgLoaded, setImgLoaded] = useState(false);
   const { firstName, links, lastName, email, setUserInfo } = useStore();
-  const profile = useQuery(api.profile.getUser);
-
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const { isSignedIn } = useAuth();
+  const profile = isSignedIn ? useQuery(api.profile.getUser) : null;
   useEffect(() => {
-    if (profile) {
-      setUserInfo({
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        email: profile.email,
-        links: profile.links,
-      });
-    }
+    if (!profile) return;
+    setUserInfo({
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+      links: profile.links,
+    });
   }, [profile]);
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">

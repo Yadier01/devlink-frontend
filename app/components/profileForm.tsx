@@ -4,20 +4,22 @@ import { useStore } from "../store";
 import { useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useAuth } from "@clerk/nextjs";
 
 export const ProfileForm = () => {
   const { firstName, lastName, email, setUserInfo } = useStore();
-  // const profile = useQuery(api.profile.getUser);
+  const { isSignedIn } = useAuth();
+  const profile = isSignedIn ? useQuery(api.profile.getUser) : null;
 
-  // useEffect(() => {
-  //   if (profile) {
-  //     setUserInfo({
-  //       firstName: profile.firstName,
-  //       lastName: profile.lastName,
-  //       email: profile.email,
-  //     });
-  //   }
-  // }, [profile]);
+  useEffect(() => {
+    if (profile) {
+      setUserInfo({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        email: profile.email,
+      });
+    }
+  }, [profile]);
 
   const submitProfile = useMutation(api.profile.createProfile);
   const buttonHandler = async () => {

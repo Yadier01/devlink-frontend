@@ -1,8 +1,9 @@
-import { cookies } from "next/headers";
+"use client";
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated } from "convex/react";
 import Link from "next/link";
 
 export const Header = () => {
-  const isToken = cookies().get("token");
   const links = [
     {
       href: "/devlink/links",
@@ -17,7 +18,7 @@ export const Header = () => {
   ];
 
   const previewLink = {
-    href: "/devlink/profile/preview",
+    href: "/preview",
     imgSrc: "/images/icon-preview-header.svg",
     text: "Preview",
   };
@@ -52,10 +53,19 @@ export const Header = () => {
                 </div>
               ))}
             </div>
-            <Link href={previewLink.href}>
-              <img src={previewLink.imgSrc} alt="" className="lg:hidden" />
-              <p className="hidden lg:flex">{previewLink.text}</p>
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link href={previewLink.href}>
+                <img src={previewLink.imgSrc} alt="" className="lg:hidden" />
+                <p className="hidden lg:flex">{previewLink.text}</p>
+              </Link>
+
+              <Authenticated>
+                <UserButton />
+              </Authenticated>
+              <Unauthenticated>
+                <SignInButton />
+              </Unauthenticated>
+            </div>
           </span>
         </nav>
       </header>

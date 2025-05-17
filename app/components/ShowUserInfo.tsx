@@ -17,7 +17,7 @@ export default function ShowUserInfo({ data }: any) {
           </span>
 
           <div className="w-full text-center">
-            {link.links.map((link: any) => (
+            {link?.links?.map((link: any) => (
               <div className="flex w-full" key={link._id}>
                 <a href={link.url} target="_blank" className="w-full my-1.5">
                   <LinkPlataformColor link={link} isPhone={false} />

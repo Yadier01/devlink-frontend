@@ -18,6 +18,8 @@ export const createProfile = mutation({
 
     // Check if profile already exists
     const user = await ctx.auth.getUserIdentity();
+    if (!user) throw new Error("Not authenticated");
+
     const exists = await ctx.db
       .query("profile")
       .withIndex("by_userId", (q) => q.eq("userId", user?.subject!))
@@ -53,7 +55,7 @@ export const getProfile = query({
 
     if (!profile) throw new Error("Profile not found");
 
-    const links = getUserLinks(ctx, { profileId: profile._id });
+    const links = await getUserLinks(ctx, { profileId: profile._id });
     return {
       ...profile,
       links: links,
@@ -93,6 +95,7 @@ export const createLink = mutation({
   },
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
+
     if (!user) throw new Error("Not authenticated");
 
     const profile = await ctx.db

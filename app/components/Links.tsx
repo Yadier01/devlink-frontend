@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { query } from "@/convex/_generated/server";
+import { useAuth } from "@clerk/nextjs";
 
 const plataformOption = [
   { id: 1, name: "Github", imgSrc: "/images/icon-github-gray.svg" },
@@ -30,10 +31,12 @@ const plataformOption = [
 export const Links = () => {
   const links = useStore((state) => state.links);
   const setUserLinks = useStore((state) => state.setUserLinks);
-  const { firstName, lastName, email } = useStore();
+  const { isSignedIn } = useAuth();
+
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const createProfile = useMutation(api.profile.createLink);
-  const usersLinks = useQuery(api.profile.getLink);
+  const usersLinks = isSignedIn ? useQuery(api.profile.getLink) : null;
+
   useEffect(() => {
     if (usersLinks) {
       setUserLinks(usersLinks);
@@ -46,9 +49,8 @@ export const Links = () => {
           return { _id: link._id, platform: link.platform, url: link.url };
         }),
       });
-      console.log(created);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
