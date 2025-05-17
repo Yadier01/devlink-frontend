@@ -1,8 +1,6 @@
 import { v } from "convex/values";
-import { getManyFrom } from "convex-helpers/server/relationships";
-import { internalQuery, mutation, query } from "./_generated/server";
-import { internal } from "./_generated/api";
-import { getUserProfile } from "./model/profile";
+import { mutation, query } from "./_generated/server";
+import { getUserProfile, getUserProfileByUserId } from "./model/profile";
 import { getUserLinks } from "./model/links";
 
 export const createProfile = mutation({
@@ -20,10 +18,7 @@ export const createProfile = mutation({
     const user = await ctx.auth.getUserIdentity();
     if (!user) throw new Error("Not authenticated");
 
-    const exists = await ctx.db
-      .query("profile")
-      .withIndex("by_userId", (q) => q.eq("userId", user?.subject!))
-      .unique();
+    const exists = await getUserProfileByUserId(ctx, user?.subject!);
 
     if (exists) {
       ctx.db.patch(exists._id, {
@@ -51,11 +46,11 @@ export const getProfile = query({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    const profile = await getUserProfile(ctx, args);
+    const profile = await getUserProfile(ctx, args.name);
 
     if (!profile) throw new Error("Profile not found");
 
-    const links = await getUserLinks(ctx, { profileId: profile._id });
+    const links = await getUserLinks(ctx, profile._id);
     return {
       ...profile,
       links: links,
@@ -67,14 +62,11 @@ export const getUser = query({
   args: {},
   handler: async (ctx) => {
     const user = await ctx.auth.getUserIdentity();
-    console.log(user);
-    const profile = await ctx.db
-      .query("profile")
-      .withIndex("by_userId", (q) => q.eq("userId", user?.subject!))
-      .unique();
 
+    const profile = await getUserProfileByUserId(ctx, user?.subject!);
     if (!profile) return null;
-    const links = await getUserLinks(ctx, { profileId: profile._id });
+
+    const links = await getUserLinks(ctx, profile._id);
 
     return {
       ...profile,
@@ -98,15 +90,10 @@ export const createLink = mutation({
 
     if (!user) throw new Error("Not authenticated");
 
-    const profile = await ctx.db
-      .query("profile")
-      .withIndex("by_name", (q) => q.eq("name", user.nickname!))
-      .unique();
+    const profile = await getUserProfile(ctx, user.nickname!);
     if (!profile) throw new Error("Profile not found");
 
-    const existingLinks = await ctx.runQuery(internal.profile.getLinks, {
-      profileId: profile._id,
-    });
+    const existingLinks = await getUserLinks(ctx, profile._id);
 
     //if link is already in the database, update it
     //if link is not in the database, insert it
@@ -136,32 +123,16 @@ export const createLink = mutation({
     await Promise.all(tasks);
   },
 });
-export const getLinks = internalQuery({
-  args: {
-    profileId: v.id("profile"),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("links")
-      .withIndex("by_profile_id", (q) => q.eq("profileId", args.profileId))
-      .collect();
-  },
-});
 
 export const getLink = query({
   args: {},
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
-    if (!user) throw new Error("Not authenticated");
-    const profile = await ctx.db
-      .query("profile")
-      .withIndex("by_userId", (q) => q.eq("userId", user.subject!))
-      .unique();
+    if (!user) return null;
 
-    if (!profile) throw new Error("Profile not found");
-    return await ctx.db
-      .query("links")
-      .withIndex("by_profile_id", (q) => q.eq("profileId", profile._id))
-      .collect();
+    const profile = await getUserProfileByUserId(ctx, user.subject!);
+
+    if (!profile) return null;
+    return await getUserLinks(ctx, profile._id);
   },
 });
