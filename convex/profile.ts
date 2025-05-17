@@ -73,7 +73,7 @@ export const getUser = query({
       .withIndex("by_userId", (q) => q.eq("userId", user?.subject!))
       .unique();
 
-    if (!profile) throw new Error("Profile not found");
+    if (!profile) return null;
     const links = await getUserLinks(ctx, { profileId: profile._id });
 
     return {

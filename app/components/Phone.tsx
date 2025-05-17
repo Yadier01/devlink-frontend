@@ -8,16 +8,17 @@ import { useAuth } from "@clerk/nextjs";
 export const Phone = () => {
   const { firstName, links, lastName, email, setUserInfo } = useStore();
   const [imgLoaded, setImgLoaded] = useState(false);
-  const { isSignedIn } = useAuth();
-  const profile = isSignedIn ? useQuery(api.profile.getUser) : null;
+  const profile = useQuery(api.profile.getUser);
+
   useEffect(() => {
-    if (!profile) return;
-    setUserInfo({
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      email: profile.email,
-      links: profile.links,
-    });
+    if (profile) {
+      setUserInfo({
+        firstName: profile?.firstName,
+        lastName: profile?.lastName,
+        email: profile?.email,
+        links: profile?.links,
+      });
+    }
   }, [profile]);
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">

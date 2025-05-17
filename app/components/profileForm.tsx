@@ -4,12 +4,10 @@ import { useStore } from "../store";
 import { useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useAuth } from "@clerk/nextjs";
 
 export const ProfileForm = () => {
   const { firstName, lastName, email, setUserInfo } = useStore();
-  const { isSignedIn } = useAuth();
-  const profile = isSignedIn ? useQuery(api.profile.getUser) : null;
+  const profile = useQuery(api.profile.getUser);
 
   useEffect(() => {
     if (profile) {
