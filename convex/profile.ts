@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getUserProfile, getUserProfileByUserId } from "./model/profile";
+import { getUserProfileByName, getUserProfileByUserId } from "./model/profile";
 import { getUserLinks } from "./model/links";
 
 export const createProfile = mutation({
@@ -8,9 +8,8 @@ export const createProfile = mutation({
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
     email: v.optional(v.string()),
-    links: v.optional(v.array(v.id("links"))),
   },
-  handler: async (ctx, { firstName, lastName, email, links }) => {
+  handler: async (ctx, { firstName, lastName, email }) => {
     if (!firstName || !lastName || !email)
       throw new Error("Missing required fields");
 
@@ -46,7 +45,7 @@ export const getProfile = query({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    const profile = await getUserProfile(ctx, args.name);
+    const profile = await getUserProfileByName(ctx, args.name);
 
     if (!profile) throw new Error("Profile not found");
 
@@ -90,7 +89,7 @@ export const createLink = mutation({
 
     if (!user) throw new Error("Not authenticated");
 
-    const profile = await getUserProfile(ctx, user.nickname!);
+    const profile = await getUserProfileByName(ctx, user.nickname!);
     if (!profile) throw new Error("Profile not found");
 
     const existingLinks = await getUserLinks(ctx, profile._id);
