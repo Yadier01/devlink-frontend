@@ -2,6 +2,8 @@ import { v } from "convex/values";
 import { getManyFrom } from "convex-helpers/server/relationships";
 import { internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { getUserProfile } from "./model/profile";
+import { getUserLinks } from "./model/links";
 
 export const createProfile = mutation({
   args: {
@@ -47,10 +49,15 @@ export const getProfile = query({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    return await ctx.db
-      .query("profile")
-      .withIndex("by_name", (q) => q.eq("name", args.name))
-      .unique();
+    const profile = await getUserProfile(ctx, args);
+
+    if (!profile) throw new Error("Profile not found");
+
+    const links = getUserLinks(ctx, { profileId: profile._id });
+    return {
+      ...profile,
+      links: links,
+    };
   },
 });
 
@@ -59,10 +66,18 @@ export const getUser = query({
   handler: async (ctx) => {
     const user = await ctx.auth.getUserIdentity();
     console.log(user);
-    return await ctx.db
+    const profile = await ctx.db
       .query("profile")
       .withIndex("by_userId", (q) => q.eq("userId", user?.subject!))
       .unique();
+
+    if (!profile) throw new Error("Profile not found");
+    const links = await getUserLinks(ctx, { profileId: profile._id });
+
+    return {
+      ...profile,
+      links: links,
+    };
   },
 });
 

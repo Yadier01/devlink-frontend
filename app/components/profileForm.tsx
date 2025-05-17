@@ -7,17 +7,17 @@ import { api } from "@/convex/_generated/api";
 
 export const ProfileForm = () => {
   const { firstName, lastName, email, setUserInfo } = useStore();
-  const profile = useQuery(api.profile.getUser);
+  // const profile = useQuery(api.profile.getUser);
 
-  useEffect(() => {
-    if (profile) {
-      setUserInfo({
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        email: profile.email,
-      });
-    }
-  }, [profile]);
+  // useEffect(() => {
+  //   if (profile) {
+  //     setUserInfo({
+  //       firstName: profile.firstName,
+  //       lastName: profile.lastName,
+  //       email: profile.email,
+  //     });
+  //   }
+  // }, [profile]);
 
   const submitProfile = useMutation(api.profile.createProfile);
   const buttonHandler = async () => {

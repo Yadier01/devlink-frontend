@@ -12,6 +12,7 @@ type State = {
       lastName: string;
       email: string;
       image: string;
+      links: { _id: Id<"links">; url: string; platform: string }[];
     }>
   ) => void;
   setUserLinks: (

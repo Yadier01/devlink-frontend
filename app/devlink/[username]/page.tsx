@@ -6,12 +6,13 @@ import { useQuery } from "convex/react";
 export default function Page({ params }: { params: { username: string } }) {
   const name = params.username.toLowerCase();
   const user = useQuery(api.profile.getProfile, { name });
+
   const data = [
     {
       firstName: user?.firstName,
       lastName: user?.lastName,
       email: user?.email,
-      links: [],
+      links: user?.links,
     },
   ];
 

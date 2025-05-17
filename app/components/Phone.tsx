@@ -1,15 +1,24 @@
 "use client";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useStore } from "../store";
 import { LinkPlataformColor } from "./LinkPlataformColor";
-import fetchUserInfo from "../hooks/fetchUserInfo";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
-  const { image, firstName, lastName, email, links } = useStore();
-  console.log(firstName);
+  const { firstName, links, lastName, email, setUserInfo } = useStore();
+  const profile = useQuery(api.profile.getUser);
 
-  fetchUserInfo();
+  useEffect(() => {
+    if (profile) {
+      setUserInfo({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        email: profile.email,
+        links: profile.links,
+      });
+    }
+  }, [profile]);
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">
       <svg width="308" height="632" fill="none" viewBox="0 0 308 632">
@@ -34,7 +43,7 @@ export const Phone = () => {
         {/* @ts-ignore */}
         <image
           x="105.5"
-          xlinkHref={`http://localhost:3002${image}`}
+          xlinkHref={`/pfp.jpg`}
           y="64"
           height="96px"
           width="96px"
@@ -53,7 +62,7 @@ export const Phone = () => {
           </div>
         </foreignObject>
 
-        {firstName || lastName || email || image ? (
+        {firstName || lastName || email ? (
           <foreignObject x="46" y="170" width="200" height="30">
             <div className="w-full h-full flex items-center justify-center  ">
               <p className="text-center m-0 text-md">

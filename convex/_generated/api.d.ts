@@ -13,6 +13,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as model_links from "../model/links.js";
+import type * as model_profile from "../model/profile.js";
 import type * as profile from "../profile.js";
 
 /**
@@ -24,6 +26,8 @@ import type * as profile from "../profile.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "model/links": typeof model_links;
+  "model/profile": typeof model_profile;
   profile: typeof profile;
 }>;
 export declare const api: FilterApi<
