@@ -9,11 +9,7 @@ export default function ShowUserInfo({ data }: any) {
           key={link._id}
         >
           <span className="items-center  flex  flex-col justify-center">
-            <img
-              src={`http://localhost:3002${link.image}`}
-              className="my-3 rounded-full h-14"
-              alt=""
-            />
+            <img src={`/pfp.jpg`} className="my-3 rounded-full h-14" alt="" />
             <h1 className="font-bold  text-center  w-72 text-lg capitalize">
               {link.firstName} {link.lastName}
             </h1>

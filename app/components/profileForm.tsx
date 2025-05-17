@@ -71,7 +71,7 @@ export const ProfileForm = () => {
           </label>
           <input
             value={email}
-            type="text"
+            type="email"
             className="p-1 rounded-lg border-1 w-full border-[#623afd] focus:outline-none focus:ring-2 focus:ring-[#623afd] focus:border-transparent"
             onChange={(e) => setUserInfo({ email: e.target.value })}
           />

@@ -1,27 +1,19 @@
 "use client";
-
 import ShowUserInfo from "@/app/components/ShowUserInfo";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 
-const URL = "https://devlink-backend-production.up.railway.app/";
 export default function Page({ params }: { params: { username: string } }) {
-  const [data, setData] = useState<any>([]);
-  const name = params.username;
-  const fetchUserByName = async () => {
-    try {
-      const response = await axios.get("http://localhost:3002/", {
-        params: {
-          name,
-        },
-      });
-      setData(response.data);
-    } catch (error: any) {
-      console.log(error.response.data.error);
-    }
-  };
-  useEffect(() => {
-    fetchUserByName();
-  }, []);
+  const name = params.username.toLowerCase();
+  const user = useQuery(api.profile.getProfile, { name });
+  const data = [
+    {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      links: [],
+    },
+  ];
+
   return <ShowUserInfo data={data} />;
 }

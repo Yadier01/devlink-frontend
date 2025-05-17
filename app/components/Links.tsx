@@ -2,13 +2,15 @@
 import axios from "axios";
 import cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import fetchUserInfo from "../hooks/fetchUserInfo";
 import Button from "./Button";
 import Nolink from "./Nolink";
 import { Dropdown } from "./DropDown";
 import { useStore } from "../store";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { query } from "@/convex/_generated/server";
 
-const URL = "https://devlink-backend-production.up.railway.app/";
 const plataformOption = [
   { id: 1, name: "Github", imgSrc: "/images/icon-github-gray.svg" },
   { id: 2, name: "Youtube", imgSrc: "/images/icon-youtube-gray.svg" },
@@ -26,26 +28,27 @@ const plataformOption = [
 ];
 
 export const Links = () => {
-  const token = cookies.get("token");
   const links = useStore((state) => state.links);
   const setUserLinks = useStore((state) => state.setUserLinks);
+  const { firstName, lastName, email } = useStore();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const createProfile = useMutation(api.profile.createLink);
+  const usersLinks = useQuery(api.profile.getLink);
+  useEffect(() => {
+    if (usersLinks) {
+      setUserLinks(usersLinks);
+    }
+  }, [usersLinks]);
   const sendLinks = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3002/",
-        {
-          links,
-        },
-        {
-          headers: {
-            token,
-          },
-        },
-      );
-      console.log(response.data);
+      const created = await createProfile({
+        links: links.map((link) => {
+          return { _id: link._id, platform: link.platform, url: link.url };
+        }),
+      });
+      console.log(created);
     } catch (error: any) {
-      console.log(error.response.data.error);
+      console.log(error);
     }
   };
 
@@ -55,12 +58,14 @@ export const Links = () => {
   };
 
   const newLinkComponentHandler = () => {
-    setUserLinks([...links, { platform: "", url: "" }]);
+    const newId = String(links.length + 1);
+    setUserLinks([...links, { id: newId, platform: "", url: "" }] as any);
   };
 
-  const handleUrlChange = (idx: number, url: string) => {
+  const handleUrlChange = (_id: string, url: string) => {
     const newLinks = [...links];
-    newLinks[idx].url = url;
+    const index = links.findIndex((link) => link._id === _id);
+    newLinks[index].url = url;
     setUserLinks(newLinks);
   };
 
@@ -127,7 +132,9 @@ export const Links = () => {
                         className="border-2 border-gray-200 p-2 rounded-lg"
                         type="text"
                         value={link.url}
-                        onChange={(e) => handleUrlChange(idx, e.target.value)}
+                        onChange={(e) =>
+                          handleUrlChange(link._id, e.target.value)
+                        }
                       />
                     </span>
                   </div>

@@ -1,9 +1,10 @@
+import { Id } from "@/convex/_generated/dataModel";
 import { create } from "zustand";
 type State = {
   firstName: string;
   lastName: string;
   email: string;
-  links: { url: string; platform: string }[];
+  links: { _id: Id<"links">; url: string; platform: string }[];
   image: string;
   setUserInfo: (
     userInfo: Partial<{
@@ -11,9 +12,11 @@ type State = {
       lastName: string;
       email: string;
       image: string;
-    }>,
+    }>
   ) => void;
-  setUserLinks: (links: { url: string; platform: string }[]) => void;
+  setUserLinks: (
+    links: { _id: Id<"links">; url: string; platform: string }[]
+  ) => void;
 };
 
 export const useStore = create<State>((set) => ({
@@ -21,9 +24,8 @@ export const useStore = create<State>((set) => ({
   lastName: "",
   email: "",
   image: "",
-  links: [{ url: "", platform: "" }],
+  links: [{ _id: "" as Id<"links">, url: "", platform: "" }],
 
   setUserInfo: (userInfo) => set((state) => ({ ...state, ...userInfo })),
   setUserLinks: (links) => set({ links }),
 }));
-

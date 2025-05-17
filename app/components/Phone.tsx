@@ -7,6 +7,7 @@ import fetchUserInfo from "../hooks/fetchUserInfo";
 export const Phone = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const { image, firstName, lastName, email, links } = useStore();
+  console.log(firstName);
 
   fetchUserInfo();
   return (
@@ -52,7 +53,7 @@ export const Phone = () => {
           </div>
         </foreignObject>
 
-        {firstName && lastName ? (
+        {firstName || lastName || email || image ? (
           <foreignObject x="46" y="170" width="200" height="30">
             <div className="w-full h-full flex items-center justify-center  ">
               <p className="text-center m-0 text-md">

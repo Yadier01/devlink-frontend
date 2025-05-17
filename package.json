@@ -9,31 +9,37 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.19.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
-    "@uploadthing/react": "^6.2.2",
-    "@vercel/speed-insights": "^1.0.5",
-    "axios": "^1.6.5",
+    "@uploadthing/react": "^6.8.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "axios": "^1.9.0",
     "bcryptjs": "^2.4.3",
-    "convex": "^1.16.6",
+    "convex": "^1.24.1",
+    "convex-helpers": "^0.1.86",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.49.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.56.3",
     "react-query": "^3.39.3",
-    "uploadthing": "^6.3.1",
-    "zustand": "^4.4.7"
+    "uploadthing": "^6.13.3",
+    "zustand": "^4.5.7"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
-    "eslint": "^8",
+    "typescript": "^5.8.3",
+    "@types/node": "^20.17.47",
+    "@types/react": "^18.3.21",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "eslint": "^8.57.1",
     "eslint-config-next": "14.0.4"
-  }
+  },
+  "trustedDependencies": [
+    "@clerk/shared",
+    "@vercel/speed-insights"
+  ]
 }
