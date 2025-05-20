@@ -4,11 +4,12 @@ import { useStore } from "../store";
 import { LinkPlataformColor } from "./LinkPlataformColor";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { useAuth } from "@clerk/nextjs";
 export const Phone = () => {
-  const { firstName, links, lastName, email, setUserInfo } = useStore();
+  const { firstName, links, lastName, email, setUserInfo, image } = useStore();
   const [imgLoaded, setImgLoaded] = useState(false);
   const profile = useQuery(api.profile.getUser);
+  const images = useQuery(api.profile.getImages);
+  const img = images ? images : "";
 
   useEffect(() => {
     if (profile) {
@@ -17,9 +18,10 @@ export const Phone = () => {
         lastName: profile?.lastName,
         email: profile?.email,
         links: profile?.links,
+        image: img,
       });
     }
-  }, [profile]);
+  }, [profile, images]);
   return (
     <div className="hidden place-items-center rounded-xl bg-white lg:grid">
       <svg width="308" height="632" fill="none" viewBox="0 0 308 632">
@@ -44,7 +46,7 @@ export const Phone = () => {
         {/* @ts-ignore */}
         <image
           x="105.5"
-          xlinkHref={`/pfp.jpg`}
+          xlinkHref={image}
           y="64"
           height="96px"
           width="96px"

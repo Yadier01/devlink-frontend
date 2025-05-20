@@ -13,6 +13,7 @@ export default function Page({ params }: { params: { username: string } }) {
       lastName: user?.lastName,
       email: user?.email,
       links: user?.links,
+      image: user?.image,
     },
   ];
 
