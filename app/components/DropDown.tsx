@@ -53,7 +53,7 @@ export const Dropdown = ({
         <SVGDropdownOpen />
       </button>
       {openDropdown === idx && (
-        <div className="absolute bg-white w-full overflow-y-scroll h-80 ">
+        <div className="absolute z-10 bg-white w-full overflow-y-scroll h-80 ">
           {options.map((option) => (
             <OptionComponent
               key={option.id}

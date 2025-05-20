@@ -1,6 +1,4 @@
 "use client";
-import axios from "axios";
-import cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import Nolink from "./Nolink";
@@ -8,8 +6,6 @@ import { Dropdown } from "./DropDown";
 import { useStore } from "../store";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { query } from "@/convex/_generated/server";
 import { useAuth } from "@clerk/nextjs";
 
 const plataformOption = [
@@ -35,13 +31,14 @@ export const Links = () => {
 
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const createProfile = useMutation(api.profile.createLink);
-  const usersLinks = isSignedIn ? useQuery(api.profile.getLink) : null;
+  const usersLinks = useQuery(api.profile.getLink);
 
   useEffect(() => {
     if (usersLinks) {
       setUserLinks(usersLinks);
     }
   }, [usersLinks]);
+
   const sendLinks = async () => {
     try {
       const created = await createProfile({
