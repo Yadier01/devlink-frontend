@@ -2,6 +2,51 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getUserProfileByName, getUserProfileByUserId } from "./model/profile";
 import { getUserLinks } from "./model/links";
+import { getImage, getProfileImage } from "./model/images";
+
+export const generateUploadUrl = mutation({
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
+export const sendImage = mutation({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const profile = await getUserProfileByUserId(ctx);
+    if (!profile) return null;
+
+    const images = await ctx.db
+      .query("images")
+      .withIndex("by_profile_id", (q) => q.eq("profileId", profile._id))
+      .unique();
+
+    if (images) {
+      ctx.db.patch(images._id, {
+        url: args.storageId,
+      });
+      ctx.storage.delete(images.url);
+      return;
+    }
+
+    await ctx.db.insert("images", {
+      profileId: profile._id,
+      url: args.storageId,
+    });
+  },
+});
+
+export const getImages = query({
+  handler: async (ctx) => {
+    const profile = await getUserProfileByUserId(ctx);
+    if (!profile) return null;
+
+    const images = await getImage(ctx);
+    if (!images) return null;
+
+    return await ctx.storage.getUrl(images.url);
+  },
+});
 
 export const createProfile = mutation({
   args: {
@@ -17,7 +62,7 @@ export const createProfile = mutation({
     const user = await ctx.auth.getUserIdentity();
     if (!user) throw new Error("Not authenticated");
 
-    const exists = await getUserProfileByUserId(ctx, user?.subject!);
+    const exists = await getUserProfileByUserId(ctx);
 
     if (exists) {
       ctx.db.patch(exists._id, {
@@ -50,9 +95,11 @@ export const getProfile = query({
     if (!profile) throw new Error("Profile not found");
 
     const links = await getUserLinks(ctx, profile._id);
+    const image = await getProfileImage(ctx, profile._id);
     return {
       ...profile,
       links: links,
+      image: image,
     };
   },
 });
@@ -60,16 +107,16 @@ export const getProfile = query({
 export const getUser = query({
   args: {},
   handler: async (ctx) => {
-    const user = await ctx.auth.getUserIdentity();
-
-    const profile = await getUserProfileByUserId(ctx, user?.subject!);
+    const profile = await getUserProfileByUserId(ctx);
     if (!profile) return null;
 
     const links = await getUserLinks(ctx, profile._id);
+    const image = await getProfileImage(ctx, profile._id);
 
     return {
       ...profile,
       links: links,
+      image: image,
     };
   },
 });
@@ -125,12 +172,8 @@ export const createLink = mutation({
 
 export const getLink = query({
   args: {},
-  handler: async (ctx, args) => {
-    const user = await ctx.auth.getUserIdentity();
-    if (!user) return null;
-
-    const profile = await getUserProfileByUserId(ctx, user.subject!);
-
+  handler: async (ctx) => {
+    const profile = await getUserProfileByUserId(ctx);
     if (!profile) return null;
     return await getUserLinks(ctx, profile._id);
   },
