@@ -17,4 +17,9 @@ export default defineSchema({
     platform: v.string(),
     url: v.string(),
   }).index("by_profile_id", ["profileId"]),
+
+  images: defineTable({
+    profileId: v.id("profile"),
+    url: v.id("_storage"),
+  }).index("by_profile_id", ["profileId"]),
 });
