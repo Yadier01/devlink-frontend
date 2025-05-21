@@ -130,6 +130,7 @@ export const Links = () => {
                         name="Link"
                         className="border-2 border-gray-200 p-2 rounded-lg"
                         type="text"
+                        placeholder="https://github.com/username"
                         value={link.url}
                         onChange={(e) =>
                           handleUrlChange(link._id, e.target.value)
