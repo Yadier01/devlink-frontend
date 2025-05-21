@@ -14,7 +14,7 @@ export const OptionComponent = ({
   <p key={option.id} onClick={onClick} className="cursor-pointer p-3 border-b ">
     <span className="flex gap-10">
       <img src={option.imgSrc} alt={option.name} />
-      <p>{option.name}</p>
+      <span>{option.name}</span>
     </span>
   </p>
 );
